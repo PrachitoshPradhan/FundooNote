@@ -41,7 +41,6 @@ export const getNote = async (id, userId) => {
 
 //trash single note
 export const trashNote = async (id, userId) => {
-    console.log("INPUT - note.service -> trashNote ----->", id, userId);
     const note = await getNote(id, userId);
     let data;
     if (note) {
@@ -60,15 +59,11 @@ export const trashNote = async (id, userId) => {
     } else {
         data = null;        
     }
-    await redisClient.del('user-'+userId+'-all-notes');
-    await redisClient.del('user-'+body.userId+'-note-'+id);
-    console.log("OUTPUT - note.service -> trashNote ----->", data);
     return data;
 };
 
 //archive single note
 export const archiveNote = async (id, userId) => {
-    console.log("INPUT - note.service -> archiveNote ----->", id, userId);
     const note = await getNote(id, userId);
     let data;
     if (note) {
@@ -87,9 +82,6 @@ export const archiveNote = async (id, userId) => {
     } else {
         data = null;        
     }
-    await redisClient.del('user-'+userId+'-all-notes');
-    await redisClient.del('user-'+body.userId+'-note-'+id);
-    console.log("OUTPUT - note.service -> archiveNote ----->", data);
     return data;
 };
 
