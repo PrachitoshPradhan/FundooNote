@@ -39,6 +39,33 @@ export const getNote = async (id, userId) => {
     return data;
 };
 
+//trash single note
+export const trashNote = async (id, userId) => {
+    console.log("INPUT - note.service -> trashNote ----->", id, userId);
+    const note = await getNote(id, userId);
+    let data;
+    if (note) {
+        data = await Note.findByIdAndUpdate(
+            {
+                _id: id,
+                userId: userId
+            },
+            {
+                isTrash: !note.isTrash
+            },
+            {
+                new: true
+            }
+        );    
+    } else {
+        data = null;        
+    }
+    await redisClient.del('user-'+userId+'-all-notes');
+    await redisClient.del('user-'+body.userId+'-note-'+id);
+    console.log("OUTPUT - note.service -> trashNote ----->", data);
+    return data;
+};
+
 //archive single note
 export const archiveNote = async (id, userId) => {
     console.log("INPUT - note.service -> archiveNote ----->", id, userId);
