@@ -138,3 +138,30 @@ export const trashNote = async (req, res, next) => {
         next(error);
     }
 };
+
+/**
+ * Controller to archive a note
+ * @param  {object} req - request object
+ * @param {object} res - response object
+ * @param {Function} next
+ */
+export const archiveNote = async (req, res, next) => {
+    try {
+        console.log("Request Body ------>",req.params._id)
+        const data = await NoteService.archiveNote(req.params._id, req.body.userId);
+        if (data){
+            res.status(HttpStatus.ACCEPTED).json({
+                code: HttpStatus.ACCEPTED,
+                data: data,
+                message: 'Note archived successfully'
+            });
+        } else {
+            res.status(HttpStatus.NOT_FOUND).json({
+                code: HttpStatus.NOT_FOUND,
+                message: 'Note not found'
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
