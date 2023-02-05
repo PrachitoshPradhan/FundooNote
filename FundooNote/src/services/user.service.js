@@ -51,4 +51,23 @@ export const loginUser = async (body) => {
   catch (error) {
     throw new error(error)
   }
+};
+
+//forget password
+export const forgotPassword = async (email) => {
+	console.log("INPUT - user.service -> forgetPassword ----->", email);
+	const user = await User.findOne({email: email});
+	if(!user){
+		return {error: 1, status: HttpStatus.NOT_FOUND, message: "User Not found."};
+	}
+	const token = jwt.sign({id: user.id, email: user.email}, process.env.SECRET_KEY+user.password, {expiresIn: '15m'});
+	const resetPasswordUrl = process.env.BASE_URL + `/users/reset-password/${user.email}/${token}`;
+	sendMail({
+		to: user.email,
+		subject: "Please reset your password.",
+		text: "your password reset link :- " + resetPasswordUrl,
+		html: "<h1>your password reset link</h1><br><p>"+resetPasswordUrl+"</p>"
+	});
+	return {error: 0, status: HttpStatus.OK, ok: 'ok', message: "Password reset link is send to your email."};	
 }
+

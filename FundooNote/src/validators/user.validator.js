@@ -29,3 +29,16 @@ export const loginUserValidator = (req, res, next) => {
 		next();
 	}
 };
+
+export const forgotPasswordValidator = (req, res, next) => {
+	const schema = Joi.object({
+		email: Joi.string().email({ tlds: { allow: false } }).required()
+	});
+	const { error, value } = schema.validate(req.body);
+	if (error) {
+		next(error);
+	} else {
+		req.validatedBody = value;
+		next();
+	}
+};
