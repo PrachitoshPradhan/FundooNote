@@ -1,0 +1,356 @@
+{
+    "swagger": "2.0.0",
+    "info":{
+        "version": "v1",
+        "title": "FundooNotes",
+        "description": "FundooNotes swagger documentation"
+    },
+    "host": "localhost:8000",
+    "basepath": "/api/v1/",
+    "schemes":["http"],
+    "consumes":["application/json"],
+    "produces":["application/json"],
+    "paths": {
+        "/users/": {
+            "post": {
+                "tags": ["user"],
+                "description": "Register a new user",
+                "parameters": [
+                    {
+                        "name": "Register new user",
+                        "in": "body",
+                        "description": "user details",
+                        "schema": {
+                            "$ref": "#/definitions/newUser"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "User registered successfuly"
+                    },
+                    "500": {
+                        "description": "Incase of validation error"
+                    },
+                    "404": {
+                        "description": "Route not found error"
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "tags": ["user"],
+                "description": "Login user",
+                "parameters": [
+                    {
+                        "name": "Login user",
+                        "in": "body",
+                        "description": "user details",
+                        "schema": {
+                            "$ref": "#/definitions/loginUser"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "User login successful"
+                    },
+                    "500": {
+                        "description": "Incase of validation error"
+                    },
+                    "404": {
+                        "description": "User not found or Route not found"
+                    }
+                }
+            }
+        },
+        "/notes/": {
+            "get": {
+                "tags": ["Note"],
+                "description": "Getting all notes",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "Get all notes",
+                        "description": "Get all the notes for user",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All notes fetched successfuly"
+                    },
+                    "400": {
+                        "description": "Authorization JWT token is required"
+                    },
+                    "404": {
+                        "description": "User, route or note not found"
+                    },
+                    "500": {
+                        "description": "Incase of validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": ["Note"],
+                "description": "Creating a new note",
+                "parameters": [
+                    {
+                        "name": "Create new note",
+                        "in": "body",
+                        "description": "New note",
+                        "schema": {
+                            "$ref": "#/definitions/note"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "Note created successfully"
+                    },
+                    "400": {
+                        "description": "Authorization JWT token is required"
+                    },
+                    "404": {
+                        "description": "User, Route or Note not found"
+                    },
+                    "500": {
+                        "description": "Incase of validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ]
+            }
+        },
+        "/notes/{_id}": {
+            "get": {
+                "tags": ["Note"],
+                "description": "Get Single Note by ID",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "Note ID for getting node"
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Get note by ID"
+                    },
+                    "400": {
+                        "description": "Authorization JWT token is required"
+                    },
+                    "404": {
+                        "description": "User, Route or Note not found"
+                    },
+                    "500": {
+                        "description": "Incase of validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": ["Note"],
+                "description": "Update single note by note ID",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "Note ID for updating note"
+                    },
+                    {
+                        "name": "Update Note",
+                        "in": "body",
+                        "description": "Update Note",
+                        "schema": {
+                            "$ref": "#/definitions/note"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "Note updated successfully"
+                    },
+                    "400": {
+                        "description": "Authorization JWT token is required"
+                    },
+                    "404": {
+                        "description": "User, Route or Note not found"
+                    },
+                    "500": {
+                        "description": "Incase of validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": ["Note"],
+                "description": "Delete single note by note ID",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "Note ID for deleting note"
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "202": {
+                        "description": "Note deleted successfully"
+                    },
+                    "400": {
+                        "description": "Authorization JWT token is required"
+                    },
+                    "404": {
+                        "description": "User, Route or Note not found"
+                    },
+                    "500": {
+                        "description": "Incase of validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ]
+            }
+        },
+        "/notes/{_id}/archive": {
+            "put": {
+                "tags": ["Note"],
+                "description": "Archive or unarchive Single Note by ID",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "Note ID for archiving note"
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "Note archive successfully"
+                    },
+                    "400": {
+                        "description": "Authorization JWT token is required"
+                    },
+                    "404": {
+                        "description": "User, Route or Note not found"
+                    },
+                    "500": {
+                        "description": "Incase of validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ]
+            }
+        },
+        "/notes/{_id}/trash": {
+            "put": {
+                "tags": ["Note"],
+                "description": "Trash or untrash Single Note by ID",
+                "parameters": [
+                    {
+                        "name": "_id",
+                        "in": "path",
+                        "description": "Note ID for trashing note"
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "Note trash or untrash successfully"
+                    },
+                    "400": {
+                        "description": "Authorization token is required"
+                    },
+                    "404": {
+                        "description": "User, Route or Note not found"
+                    },
+                    "500": {
+                        "description": "In case of validation error - (invalid signature)"
+                    }
+                },
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "JWT": {
+            "type": "apiKey",
+            "name": "authorization",
+            "in": "header"
+        }
+    },
+    "definitions":{
+        "newUser": {
+            "type": "object",
+            "properties": {
+                "firstname": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "loginUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+
+        },
+        "note": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

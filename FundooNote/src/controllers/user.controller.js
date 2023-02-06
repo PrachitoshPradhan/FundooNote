@@ -37,19 +37,3 @@ export const loginUser = async (req, res, next) => {
     next(error);
   }
 };
-
-/**
- * Controller to forget password
- * @param  {object} req - request object
- * @param {object} res - response object
- * @param {Function} next
- */
-export const forgotPassword = async (req, res, next) => {
-	try {
-		const data = await UserService.forgotPassword(req.body.email);
-		return res.status(data.status).send(data);
-	} catch(error){
-		logStream.error("Could not forget password.", error);
-		next(error);
-	}
-}
