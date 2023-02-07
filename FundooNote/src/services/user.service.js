@@ -1,6 +1,7 @@
 import User from '../models/user.model';
 import bcrypt from 'bcrypt';
 import HttpStatus from 'http-status-codes';
+import { sendMail } from '../utils/mail.util';
 
 import jwt from 'jsonwebtoken';
 
@@ -51,6 +52,27 @@ export const loginUser = async (body) => {
   }
   catch (error) {
     throw new error(error)
+  }
+};
+
+//forgot password
+export const forgotPassword = async (body) => {
+  try {
+  const user = await User.findOne({email: body.email});
+  if(!user){
+    throw new Error("No user with entered email found.");
+  }else
+  var token = jwt.sign({id: user.id, email: user.email}, process.env.SENDEMAIL_SECRET_KEY);
+  // console.log("MESSAGE ---------------------------->", user.email);
+  // console.log("MESSAGE ---------------------------->", token);
+  const data = await sendMail(token, user.email)
+  return {
+    message: "token is sent to email",
+  data
+}
+  }
+  catch(error){
+    throw new Error(error)
   }
 };
 

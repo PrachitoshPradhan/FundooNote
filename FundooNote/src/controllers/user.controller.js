@@ -37,3 +37,18 @@ export const loginUser = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const forgotPassword = async (req, res, next) => {
+  try {
+    const data = await UserService.forgotPassword(req.body);
+    res.status(HttpStatus.ACCEPTED).json({
+      code : HttpStatus.ACCEPTED,
+      data: data,
+      message: "Token successfully sent to email"
+    });
+  }
+  catch(error){
+    next(error);
+  }
+};
