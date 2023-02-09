@@ -6,12 +6,12 @@
         "description": "FundooNotes swagger documentation"
     },
     "host": "localhost:9000",
-    "basepath": "/api/v1/",
+    "basePath": "/api/v1/",
     "schemes":["http"],
     "consumes":["application/json"],
     "produces":["application/json"],
     "paths": {
-        "/users/": {
+        "/users/register": {
             "post": {
                 "tags": ["user"],
                 "description": "Register a new user",
@@ -57,6 +57,34 @@
                 "responses": {
                     "200": {
                         "description": "User login successful"
+                    },
+                    "500": {
+                        "description": "Incase of validation error"
+                    },
+                    "404": {
+                        "description": "User not found or Route not found"
+                    }
+                }
+            }
+        },
+        "/users/forgotpassword": {
+            "post": {
+                "tags": ["user"],
+                "description": "User forgot password",
+                "parameters": [
+                    {
+                        "name": "Login user email",
+                        "in": "body",
+                        "description": "user email",
+                        "schema": {
+                            "$ref": "#/definitions/userEmail"
+                        }
+                    }
+                ],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Reset password email sent to mail "
                     },
                     "500": {
                         "description": "Incase of validation error"
@@ -340,6 +368,14 @@
                 }
             }
 
+        },
+        "userEmail": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
         },
         "note": {
             "type": "object",

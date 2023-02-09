@@ -87,7 +87,6 @@ export const resetPassword = async (body) => {
       },
       {
         password : body.password
-
       },
       {
         new : true
