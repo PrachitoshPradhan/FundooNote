@@ -2,6 +2,7 @@ import User from '../models/user.model';
 import bcrypt from 'bcrypt';
 import HttpStatus from 'http-status-codes';
 import { sendMail } from '../utils/mail.util';
+import { sender } from '../utils/rabbitMQ';
 
 import jwt from 'jsonwebtoken';
 
@@ -28,6 +29,7 @@ export const registerUser = async (body) => {
     }
       body.password = await getHashPassword(body.password);
       const data = await User.create(body);
+      sender('userData', JSON.stringify(data));
       return {data, message: "User registered successfully"};
     
     
